@@ -1,4 +1,4 @@
-.Javascript TextMate bundle
+Javascript TextMate bundle
 ==========================
 
     Runs javascript directly using Cmd+R
