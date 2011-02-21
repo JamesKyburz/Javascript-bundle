@@ -4,6 +4,8 @@ Javascript TextMate bundle
     Runs javascript directly using Cmd+R
     Replaces lines or whole document using # markers just like Ruby
     #+tab to create markers, and Shift+Control+Cmd+E to execute
+    
+    use console.log to output 
 
 Installation
 ============
