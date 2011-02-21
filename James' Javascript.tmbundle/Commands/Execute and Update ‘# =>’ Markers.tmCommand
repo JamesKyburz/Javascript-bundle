@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>beforeRunningCommand</key>
+	<string>nop</string>
+	<key>command</key>
+	<string>#!/usr/bin/env ruby
+
+require "#{ENV["TM_BUNDLE_SUPPORT"]}/lib/writer"
+
+original_content = STDIN.readlines
+content = original_content.each_with_index.map do |line,index| 
+	if line =~ /\/\/# =&gt; / and line !~ /var\s/  
+		statement = line.gsub(/([^;]+);?\s?\/\/# =&gt; .*/,'\1').gsub(/\r|\n/,'')
+		"console.log(\"marker@line#{index}##{statement}; //# =&gt; \",#{statement});"
+	else
+		line
+	end
+end
+
+writer = Writer.new(content)
+writer.write
+
+jsc = `which jsc`
+output = `"#{jsc}" -d "#{writer.document}"` 
+replaced = content
+
+output.split(/\n/).each do |line|
+  if line =~ /marker\@line/ 
+	line_number = line[/@line\d+/].gsub(/\D/,'').to_i
+	replaced[line_number] = line.gsub(/marker@line\d+#(.*)(\s*;)\s*\/\/# =&gt; ,(.*)/) do
+		"#{$1}#{$2} //# =&gt; #{$3}"
+	end
+  end
+end
+
+unless replaced.find {|r| r =~ /marker@/ }
+	puts replaced
+else
+	puts output[/Exception:.*/] || 'error check javascript'
+	puts original_content
+end</string>
+	<key>input</key>
+	<string>selection</string>
+	<key>keyEquivalent</key>
+	<string>^@E</string>
+	<key>name</key>
+	<string>Execute and Update ‘# =&gt;’ Markers</string>
+	<key>output</key>
+	<string>replaceSelectedText</string>
+	<key>scope</key>
+	<string>source.js</string>
+	<key>uuid</key>
+	<string>0A9A7288-5ED9-4FA4-9318-9590B405FDB6</string>
+</dict>
+</plist>
