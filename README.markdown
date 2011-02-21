@@ -1,4 +1,4 @@
-Javascript TextMate bundle
+.Javascript TextMate bundle
 ==========================
 
     Runs javascript directly using Cmd+R
@@ -10,6 +10,6 @@ Installation
 
     mkdir -p ~/Library/Application\ Support/TextMate/Bundles
     cd ~/Library/Application\ Support/TextMate/Bundles
-    git clone git://github.com/JamesKyburz/Javascript-bundle.git "James` javascript.tmbundle"
+    git clone git://github.com/JamesKyburz/Javascript-bundle.git "James\'\ Javascript.tmbundle"
     osascript -e 'tell app "TextMate" to reload bundles'
     
